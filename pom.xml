@@ -9,7 +9,7 @@
         <version>1.0.0</version>
         <relativePath>../../super-pom</relativePath>
     </parent>
-
+    <groupId>com.astar</groupId>
     <artifactId>common-auxiliary</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
