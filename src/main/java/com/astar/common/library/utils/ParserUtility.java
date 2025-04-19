@@ -1,9 +1,9 @@
 package com.astar.common.library.utils;
 
-import com.astar.common.library.utils.enums.LengthScaleUnit;
-import com.astar.common.library.utils.enums.MassScaleUnit;
-import com.astar.common.library.utils.enums.TemperatureScaleUnit;
-import com.astar.common.library.utils.enums.TimeScaleUnit;
+import com.astar.common.library.enums.LengthScaleUnit;
+import com.astar.common.library.enums.MassScaleUnit;
+import com.astar.common.library.enums.TemperatureScaleUnit;
+import com.astar.common.library.enums.TimeScaleUnit;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,7 +11,6 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
-import java.util.Date;
 
 public abstract class ParserUtility {
 

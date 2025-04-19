@@ -1,4 +1,4 @@
-package com.astar.common.library.utils.enums;
+package com.astar.common.library.enums;
 
 import java.util.HashMap;
 import java.util.Map;
