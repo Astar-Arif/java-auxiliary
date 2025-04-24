@@ -245,7 +245,8 @@ public enum MassScaleUnit {
             symbolField.setAccessible(true);
             symbolField.set(CUSTOM, symbol);
 
-            java.lang.reflect.Field factorField = MassScaleUnit.class.getDeclaredField("toKilogramFactor");
+            java.lang.reflect.Field factorField = MassScaleUnit.class.getDeclaredField(
+                    "toKilogramFactor");
             factorField.setAccessible(true);
             factorField.set(CUSTOM, toKilogramFactor);
 

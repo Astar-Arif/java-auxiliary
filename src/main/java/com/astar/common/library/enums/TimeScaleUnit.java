@@ -179,7 +179,8 @@ public enum TimeScaleUnit {
             symbolField.setAccessible(true);
             symbolField.set(CUSTOM, symbol);
 
-            java.lang.reflect.Field factorField = TimeScaleUnit.class.getDeclaredField("toSecondsFactor");
+            java.lang.reflect.Field factorField = TimeScaleUnit.class.getDeclaredField(
+                    "toSecondsFactor");
             factorField.setAccessible(true);
             factorField.set(CUSTOM, toSecondsFactor);
 

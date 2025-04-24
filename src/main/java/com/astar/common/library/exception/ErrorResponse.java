@@ -12,9 +12,8 @@ public class ErrorResponse {
     private Integer status;
     private Collection<ErrorField> errorFields;
 
-    public ErrorResponse(){}
-
-
+    public ErrorResponse() {
+    }
 
 
 }

@@ -7,7 +7,7 @@ public class ErrorField {
     private String message;
     private String code;
 
-    public ErrorField(String field, String message, String code){
+    public ErrorField(String field, String message, String code) {
         this.field = field;
         this.message = message;
         this.code = code;

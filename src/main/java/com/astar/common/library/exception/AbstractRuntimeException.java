@@ -11,7 +11,7 @@ public abstract class AbstractRuntimeException extends RuntimeException {
         this.field = field;
     }
 
-    public ErrorField toErrorField(){
+    public ErrorField toErrorField() {
         return new ErrorField(this.getField(), this.getMessage(), this.getCode());
 
     }

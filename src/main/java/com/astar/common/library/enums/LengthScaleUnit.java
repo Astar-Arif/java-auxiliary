@@ -155,7 +155,8 @@ public enum LengthScaleUnit {
             symbolField.setAccessible(true);
             symbolField.set(CUSTOM, symbol);
 
-            java.lang.reflect.Field factorField = LengthScaleUnit.class.getDeclaredField("toMetersFactor");
+            java.lang.reflect.Field factorField = LengthScaleUnit.class.getDeclaredField(
+                    "toMetersFactor");
             factorField.setAccessible(true);
             factorField.set(CUSTOM, toMetersFactor);
 

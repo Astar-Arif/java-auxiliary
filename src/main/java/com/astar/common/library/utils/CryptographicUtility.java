@@ -54,7 +54,6 @@ public abstract class CryptographicUtility {
     }
 
     /**
-     *
      * @param plainText
      * @param secretKey
      * @return
@@ -117,7 +116,6 @@ public abstract class CryptographicUtility {
     }
 
     /**
-     *
      * @param ivBase64Str
      * @param cipherTextBase64Str
      * @param password
@@ -148,7 +146,6 @@ public abstract class CryptographicUtility {
         byte[] plainTextBytes = cipher.doFinal(cipherText);
         return new String(plainTextBytes);
     }
-
 
 
     public static SecretKey AESGetKeyFromPassword(
