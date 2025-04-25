@@ -24,7 +24,7 @@ public abstract class CryptographicUtility {
     /**
      * Run to add BouncyCastleProvider
      */
-    public static void initializeEncryption() {
+    public static void initializeEncryption() throws NullPointerException, SecurityException {
         Security.addProvider(new BouncyCastleProvider());
         isInitializedEncryption = true;
     }
