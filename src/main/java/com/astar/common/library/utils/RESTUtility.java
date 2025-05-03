@@ -27,13 +27,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-// TODO IMPROVE ALL
+/**
+ * The type Rest utility.
+ */
 @Service
 public class RESTUtility {
     private final static Logger LOGGER = LoggerFactory.getLogger(RESTUtility.class);
 
     private final WebClient.Builder clientBuilder;
 
+    /**
+     * Instantiates a new Rest utility.
+     *
+     * @param builder the builder
+     */
     public RESTUtility(WebClient.Builder builder) {
         this.clientBuilder = builder;
     }
@@ -56,6 +63,20 @@ public class RESTUtility {
         return builder.build();
     }
 
+    /**
+     * Get t.
+     *
+     * @param <T>                 the type parameter
+     * @param baseUrl             the base url
+     * @param uri                 the uri
+     * @param headers             the headers
+     * @param cookies             the cookies
+     * @param uriVariables        the uri variables
+     * @param queryParams         the query params
+     * @param timeOutMilliseconds the time out milliseconds
+     * @param responseObj         the response obj
+     * @return the t
+     */
     public <T> T get(
             String baseUrl,
             String uri,
@@ -84,14 +105,29 @@ public class RESTUtility {
         }
         LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
         return client
-                .get()
+                .options()
                 .uri(uriBuilder.toUriString())
                 .retrieve()
                 .bodyToMono(responseObj)
                 .block(Duration.ofMillis(1000000));
     }
 
-    public <T, S> T post(
+    /**
+     * Post t.
+     *
+     * @param <T>                 the type parameter
+     * @param baseUrl             the base url
+     * @param uri                 the uri
+     * @param headers             the headers
+     * @param cookies             the cookies
+     * @param uriVariables        the uri variables
+     * @param queryParams         the query params
+     * @param timeOutMilliseconds the time out milliseconds
+     * @param requestBody         the request body
+     * @param responseObj         the response obj
+     * @return the t
+     */
+    public <T> T post(
             String baseUrl,
             String uri,
             Map<String, String> headers,
@@ -121,8 +157,7 @@ public class RESTUtility {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
-//        TODO IMPROVE THIS
-        LOGGER.info("Sending Request To : " + uriBuilder.toUriString());
+        LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
         return headersSpec
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
@@ -131,85 +166,208 @@ public class RESTUtility {
                 .ifModifiedSince(ZonedDateTime.now())
                 .retrieve()
                 .bodyToMono(responseObj)
-                .block(Duration.ofMillis(1000));
+                .block(Duration.ofMillis(100000000));
     }
 
-//    public static void main(String[] args) {
-////        !4.1
-//        WebClient client = WebClient.create();
-//
-//        WebClient client1 = WebClient.create("http://localhost:8080");
-//
-//        WebClient client2 = WebClient.builder()
-//                .baseUrl("http://localhost:8080")
-//                .defaultCookie("cookieKey", "cookieValue")
-//                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .defaultUriVariables(Collections.singletonMap("url", "http://localhost:8080"))
-//                .build();
-////        !4.2
-//        HttpClient httpClient = HttpClient.create()
-//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-//                .responseTimeout(Duration.ofMillis(5000))
-//                .doOnConnected(conn ->
-//                                       conn
-//                                               .addHandlerLast(new ReadTimeoutHandler(5000,
-//                                                                                      TimeUnit.MILLISECONDS))
-//                                               .addHandlerLast(new WriteTimeoutHandler(5000,
-//                                                                                       TimeUnit.MILLISECONDS))
-//                );
-//
-//        WebClient client3 = WebClient.builder()
-//                .clientConnector(new ReactorClientHttpConnector(httpClient))
-//                .build();
-////        !4.3
-//        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
-//        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec1 = client.post();
-//
-////        !4.4
-//        WebClient.RequestBodySpec bodySpec = uriSpec.uri("/resource");
-//        WebClient.RequestBodySpec bodySpec1 = uriSpec.uri(
-//                uriBuilder -> uriBuilder.pathSegment("/resource").build()
-//        );
-////        !4.5
-//        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue("data");
-//        WebClient.RequestHeadersSpec<?> headersSpec1 = bodySpec.body(
-//                Mono.just(new Testing()), Testing.class
-//        );
-//        WebClient.RequestHeadersSpec<?> headersSpec2 = bodySpec.body(
-//                BodyInserters.fromValue("body")
-//        );
-//        WebClient.RequestHeadersSpec<?> headersSpec3 = bodySpec.body(
-//                BodyInserters.fromPublisher(Mono.just("data"), String.class)
-//        );
-//
-//        LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-//        map.add("k1", "value1");
-//        map.add("k2", "value2");
-//        WebClient.RequestHeadersSpec<?> headersSpec4 = bodySpec.body(
-//                BodyInserters.fromMultipartData(map));
-//
-////        !4.6
-//        WebClient.ResponseSpec responseSpec = headersSpec
-//                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
-//                .acceptCharset(StandardCharsets.UTF_8)
-//                .ifNoneMatch("*")
-//                .ifModifiedSince(ZonedDateTime.now())
-//                .retrieve();
-////        !4.7
-//        Mono<String> response = headersSpec.exchangeToMono(resp -> {
-//            if (resp.statusCode().equals(HttpStatus.OK)) {
-//                return resp.bodyToMono(String.class);
-//            } else if (resp.statusCode().is4xxClientError()) {
-//                return Mono.just("Error Response");
-//            } else {
-//                return resp.createException().flatMap(Mono::error);
-//            }
-//        });
-//
-//        Mono<String> response1 = headersSpec1.retrieve().bodyToMono(String.class);
-//    }
 
+    /**
+     * Put t.
+     *
+     * @param <T>                 the type parameter
+     * @param baseUrl             the base url
+     * @param uri                 the uri
+     * @param headers             the headers
+     * @param cookies             the cookies
+     * @param uriVariables        the uri variables
+     * @param queryParams         the query params
+     * @param timeOutMilliseconds the time out milliseconds
+     * @param requestBody         the request body
+     * @param responseObj         the response obj
+     * @return the t
+     */
+    public <T> T put(
+            String baseUrl,
+            String uri,
+            Map<String, String> headers,
+            Map<String, String> cookies,
+            Map<String, String> uriVariables,
+            Map<String, String> queryParams,
+            int timeOutMilliseconds,
+            Object requestBody,
+            Class<T> responseObj
+    ) {
+        Objects.requireNonNull(baseUrl, "BaseUrl cannot be null");
+        if (uri == null) uri = "";
+        HttpClient http = HttpClient.create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeOutMilliseconds)
+                .responseTimeout(Duration.ofMillis(timeOutMilliseconds))
+                .doOnConnected(conn -> {
+                  conn.addHandlerLast(new ReadTimeoutHandler(timeOutMilliseconds, TimeUnit.MILLISECONDS))
+                          .addHandlerLast(new WriteTimeoutHandler(timeOutMilliseconds, TimeUnit.MILLISECONDS));
+                });
+        WebClient client = this.getClient(baseUrl, headers, cookies, uriVariables, http);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
+        if (queryParams != null){
+            queryParams.forEach(uriBuilder::queryParam);
+        }
+        WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
+        WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
+        WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
+        LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+        return headersSpec
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
+                .acceptCharset(StandardCharsets.UTF_8)
+                .ifNoneMatch("*")
+                .ifModifiedSince(ZonedDateTime.now())
+                .retrieve()
+                .bodyToMono(responseObj)
+                .block(Duration.ofMillis(100000000));
+    }
+
+    /**
+     * Patch t.
+     *
+     * @param <T>                 the type parameter
+     * @param baseUrl             the base url
+     * @param uri                 the uri
+     * @param headers             the headers
+     * @param cookies             the cookies
+     * @param uriVariables        the uri variables
+     * @param queryParams         the query params
+     * @param timeOutMilliseconds the time out milliseconds
+     * @param requestBody         the request body
+     * @param responseObj         the response obj
+     * @return the t
+     */
+    public <T> T patch(
+            String baseUrl,
+            String uri,
+            Map<String, String> headers,
+            Map<String, String> cookies,
+            Map<String, String> uriVariables,
+            Map<String, String> queryParams,
+            int timeOutMilliseconds,
+            Object requestBody,
+            Class<T> responseObj
+    ) {
+        {
+            Objects.requireNonNull(baseUrl, "BaseUrl cannot be null");
+            if (uri == null) uri = "";
+            HttpClient http = HttpClient.create()
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeOutMilliseconds)
+                    .responseTimeout(Duration.ofMillis(timeOutMilliseconds))
+                    .doOnConnected(conn -> {
+                        conn.addHandlerLast(
+                                        new ReadTimeoutHandler(timeOutMilliseconds, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(timeOutMilliseconds,
+                                                                        TimeUnit.MILLISECONDS));
+                    });
+            WebClient client = this.getClient(baseUrl, headers, cookies, uriVariables, http);
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
+            if (queryParams != null){
+                queryParams.forEach(uriBuilder::queryParam);
+            }
+            WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PATCH);
+            WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
+            WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
+            LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+            return headersSpec
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
+                    .acceptCharset(StandardCharsets.UTF_8)
+                    .ifNoneMatch("*")
+                    .ifModifiedSince(ZonedDateTime.now())
+                    .retrieve()
+                    .bodyToMono(responseObj)
+                    .block(Duration.ofMillis(100000000));
+        }
+
+    }
+
+    /**
+     * Delete t.
+     *
+     * @param <T>                 the type parameter
+     * @param baseUrl             the base url
+     * @param uri                 the uri
+     * @param headers             the headers
+     * @param cookies             the cookies
+     * @param uriVariables        the uri variables
+     * @param queryParams         the query params
+     * @param timeOutMilliseconds the time out milliseconds
+     * @param responseObj         the response obj
+     * @return the t
+     */
+    public <T> T delete(
+            String baseUrl,
+            String uri,
+            Map<String, String> headers,
+            Map<String, String> cookies,
+            Map<String, String> uriVariables,
+            Map<String, String> queryParams,
+            int timeOutMilliseconds,
+            Class<T> responseObj
+    ) {
+        {
+            Objects.requireNonNull(baseUrl, "BaseUrl cannot be null");
+            if (uri == null) uri = "";
+            HttpClient http = HttpClient.create()
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeOutMilliseconds)
+                    .responseTimeout(Duration.ofMillis(timeOutMilliseconds))
+                    .doOnConnected(conn -> {
+                        conn.addHandlerLast(
+                                        new ReadTimeoutHandler(timeOutMilliseconds, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(timeOutMilliseconds,
+                                                                        TimeUnit.MILLISECONDS));
+                    });
+            WebClient client = this.getClient(baseUrl, headers, cookies, uriVariables, http);
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
+            if (queryParams != null) {
+                queryParams.forEach(uriBuilder::queryParam);
+            }
+            LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+            return client
+                    .delete()
+                    .uri(uriBuilder.toUriString())
+                    .retrieve()
+                    .bodyToMono(responseObj)
+                    .block(Duration.ofMillis(1000000));
+        }
+    }
+
+    /**
+     * Options t.
+     *
+     * @param <T>                 the type parameter
+     * @param baseUrl             the base url
+     * @param uri                 the uri
+     * @param headers             the headers
+     * @param cookies             the cookies
+     * @param uriVariables        the uri variables
+     * @param queryParams         the query params
+     * @param timeOutMilliseconds the time out milliseconds
+     * @param requestBody         the request body
+     * @param responseType        the response type
+     * @return the t
+     */
+    public <T> T options(
+            String baseUrl,
+            String uri,
+            Map<String, String> headers,
+            Map<String, String> cookies,
+            Map<String, String> uriVariables,
+            Map<String, String> queryParams,
+            int timeOutMilliseconds,
+            Object requestBody,
+            Class<T> responseType
+    ) {
+        return null;
+    }
+
+    /**
+     * The type Testing.
+     */
     public static class Testing {
         private int age;
         private String name;
