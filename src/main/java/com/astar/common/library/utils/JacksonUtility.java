@@ -13,7 +13,6 @@ public abstract class JacksonUtility {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
-     *
      * @param obj
      * @param isPrettyPrint
      * @return
@@ -21,7 +20,8 @@ public abstract class JacksonUtility {
     public static String objectToJSONString(
             Object obj,
             boolean isPrettyPrint,
-            @Nullable Class<?> viewLevel) {
+            @Nullable Class<?> viewLevel
+    ) {
 
         try {
             ObjectWriter writer;

@@ -7,22 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
-import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -151,7 +145,7 @@ public class RESTUtility {
                 });
         WebClient client = this.getClient(baseUrl, headers, cookies, uriVariables, http);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
-        if (queryParams != null){
+        if (queryParams != null) {
             queryParams.forEach(uriBuilder::queryParam);
         }
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
@@ -202,12 +196,14 @@ public class RESTUtility {
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeOutMilliseconds)
                 .responseTimeout(Duration.ofMillis(timeOutMilliseconds))
                 .doOnConnected(conn -> {
-                  conn.addHandlerLast(new ReadTimeoutHandler(timeOutMilliseconds, TimeUnit.MILLISECONDS))
-                          .addHandlerLast(new WriteTimeoutHandler(timeOutMilliseconds, TimeUnit.MILLISECONDS));
+                    conn.addHandlerLast(
+                                    new ReadTimeoutHandler(timeOutMilliseconds, TimeUnit.MILLISECONDS))
+                            .addHandlerLast(new WriteTimeoutHandler(timeOutMilliseconds,
+                                                                    TimeUnit.MILLISECONDS));
                 });
         WebClient client = this.getClient(baseUrl, headers, cookies, uriVariables, http);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
-        if (queryParams != null){
+        if (queryParams != null) {
             queryParams.forEach(uriBuilder::queryParam);
         }
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
@@ -265,7 +261,7 @@ public class RESTUtility {
                     });
             WebClient client = this.getClient(baseUrl, headers, cookies, uriVariables, http);
             UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
-            if (queryParams != null){
+            if (queryParams != null) {
                 queryParams.forEach(uriBuilder::queryParam);
             }
             WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PATCH);
