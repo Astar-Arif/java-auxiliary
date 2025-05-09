@@ -97,7 +97,7 @@ public class RESTUtility {
         if (queryParams != null) {
             queryParams.forEach(uriBuilder::queryParam);
         }
-        LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+        LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
         return client
                 .options()
                 .uri(uriBuilder.toUriString())
@@ -151,7 +151,7 @@ public class RESTUtility {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
-        LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+        LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
         return headersSpec
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
@@ -209,7 +209,7 @@ public class RESTUtility {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
-        LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+        LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
         return headersSpec
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
@@ -267,7 +267,7 @@ public class RESTUtility {
             WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PATCH);
             WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
             WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
-            LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+            LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
             return headersSpec
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
@@ -322,7 +322,7 @@ public class RESTUtility {
             if (queryParams != null) {
                 queryParams.forEach(uriBuilder::queryParam);
             }
-            LOGGER.info("Sending Request To : " + (baseUrl + uriBuilder.toUriString()));
+            LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
             return client
                     .delete()
                     .uri(uriBuilder.toUriString())
