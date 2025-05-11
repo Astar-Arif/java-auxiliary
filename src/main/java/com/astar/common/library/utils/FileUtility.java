@@ -33,6 +33,11 @@ public abstract class FileUtility {
             File file, List<String> columns, List<List<String>> data,
             String delimiter
     ) throws IOException {
+        int colSize = columns.size();
+        for (int i = 0; i < colSize; i++) {
+            String curr = columns.get(i) + (i != colSize - 1 ? delimiter : "");
+            System.out.print(curr);
+        }
         return null;
     }
 

@@ -1,10 +1,6 @@
 package com.astar.common.library.utils;
 
 import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.UUIDGenerator;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
-import org.hibernate.validator.constraints.Range;
 
 import java.math.BigInteger;
 import java.util.UUID;
@@ -14,9 +10,11 @@ public class UniqueUtility {
     private final AtomicReference<BigInteger> number = new AtomicReference<>(BigInteger.ZERO);
 
 
-    private static final long SNOWFLAKE_EPOCH = Math.min(System.currentTimeMillis() - 10000L, 355827076000L);
-    private static final short SNOWFLAKE_MACHINE_ID =  (short) 519; //10 bits
-    private static final AtomicReference<Short> MACHINE_SEQUENCE_NUMBER = new AtomicReference<>((short)0);
+    private static final long SNOWFLAKE_EPOCH = Math.min(System.currentTimeMillis() - 10000L,
+                                                         355827076000L);
+    private static final short SNOWFLAKE_MACHINE_ID = (short) 519; //10 bits
+    private static final AtomicReference<Short> MACHINE_SEQUENCE_NUMBER = new AtomicReference<>(
+            (short) 0);
 
     private static final byte SMI_BITS = 10;
     private static final byte MSN_BITS = 12;
@@ -37,11 +35,14 @@ public class UniqueUtility {
             throw new IllegalArgumentException("Unsupported number class: " + clazz.getName());
         }
     }
-    public static long generateSnowflake(){
-        return ((System.currentTimeMillis() - SNOWFLAKE_EPOCH) << SMI_BITS | SNOWFLAKE_MACHINE_ID) << MSN_BITS | MACHINE_SEQUENCE_NUMBER.getAndUpdate(n -> (short)((n + 1) & 0x0FFF))   ;
+
+    public static long generateSnowflake() {
+        return ((System.currentTimeMillis() - SNOWFLAKE_EPOCH) << SMI_BITS | SNOWFLAKE_MACHINE_ID) << MSN_BITS | MACHINE_SEQUENCE_NUMBER.getAndUpdate(
+                n -> (short) ((n + 1) & 0x0FFF));
     }
+
     // !UUID NOT THEORETICALLY UNIQUE, BUT WHATEVER
-    public static UUID generateUUID(byte uuidVersion){
+    public static UUID generateUUID(byte uuidVersion) {
         return switch (uuidVersion) {
             case 1 -> Generators.timeBasedGenerator().generate();
             case 3 -> Generators.nameBasedGenerator().generate("ASTAR");
@@ -49,7 +50,8 @@ public class UniqueUtility {
             case 5 -> Generators.nameBasedGenerator(null, null).generate("ASTAR");
             case 6 -> Generators.timeBasedReorderedGenerator().generate();
             case 7 -> Generators.timeBasedEpochGenerator().generate();
-            default -> Generators.randomBasedGenerator().generate(); // Default to random-based (v4) as fallback
+            default ->
+                    Generators.randomBasedGenerator().generate(); // Default to random-based (v4) as fallback
         };
     }
 

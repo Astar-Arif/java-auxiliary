@@ -15,6 +15,12 @@
     <packaging>jar</packaging>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter-api}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
@@ -47,7 +53,7 @@
 
         <dependency>
             <groupId>com.fasterxml.uuid</groupId>
-            <artifactId> java-uuid-generator</artifactId>
+            <artifactId>java-uuid-generator</artifactId>
             <version>${java-uuid-generator.version}</version>
         </dependency>
         <dependency>
@@ -123,11 +129,24 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <trimStackTrace>true</trimStackTrace>
+                    <argLine>
+                        -javaagent:C:/Users/Arif/.m2/repository/org/mockito/mockito-core/5.14.2/mockito-core-5.14.2.jar
+                        -Xshare:off
+                    </argLine>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
