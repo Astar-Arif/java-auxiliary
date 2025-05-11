@@ -8,9 +8,19 @@ import org.apache.commons.lang3.StringUtils;
 
 //TODO ADD MORE
 public abstract class StringUtility extends StringUtils {
-    public static boolean isContainEmoji(String content) {
-        if (content == null) return false;
-        return EmojiManager.containsEmoji(content);
+
+    public static int countWords(String text){
+        int res = 0;
+        for (int i = 0; i < text.length(); i++){
+            char c = text.charAt(i);
+            if (c == ' ')res++;
+        }
+        return (res == 0) ? 1 : res;
+
+    }
+    public static boolean isContainEmoji(String text) {
+        if (text == null) return false;
+        return EmojiManager.containsEmoji(text);
     }
 
     public static boolean isMobileNumber(String mobileNo) {
