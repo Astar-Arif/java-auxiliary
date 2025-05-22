@@ -2628,72 +2628,22 @@ public enum LanguageAlpha3Code {
     zza("Zaza");
 
 
-    public enum Usage {
-        TERMINOLOGY,
-
-        BIBLIOGRAPHY,
-
-        COMMON
-    }
+    private final String name;
 
     ;
-
-
-    private final String name;
 
 
     private LanguageAlpha3Code(String name) {
         this.name = name;
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-
-    public LanguageCode getAlpha2() {
-        return null;
-    }
-
-
-    public Usage getUsage() {
-        return Usage.COMMON;
-    }
-
-
-    public LanguageAlpha3Code getSynonym() {
-        return this;
-    }
-
-
-    public LanguageAlpha3Code getAlpha3B() {
-        if (getUsage() == Usage.BIBLIOGRAPHY) {
-            return this;
-        } else {
-            return getSynonym();
-        }
-    }
-
-
-    public LanguageAlpha3Code getAlpha3T() {
-        if (getUsage() == Usage.TERMINOLOGY) {
-            return this;
-        } else {
-            return getSynonym();
-        }
-    }
-
-
     public static LanguageAlpha3Code getByCode(String code) {
         return getByCode(code, true);
     }
 
-
     public static LanguageAlpha3Code getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
     }
-
 
     public static LanguageAlpha3Code getByCode(String code, boolean caseSensitive) {
         code = canonicalize(code, caseSensitive);
@@ -2724,7 +2674,6 @@ public enum LanguageAlpha3Code {
         return alpha2.getAlpha3();
     }
 
-
     static LanguageAlpha3Code getByEnumName(String name) {
         try {
             return Enum.valueOf(LanguageAlpha3Code.class, name);
@@ -2732,7 +2681,6 @@ public enum LanguageAlpha3Code {
             return null;
         }
     }
-
 
     private static String canonicalize(String code, boolean caseSensitive) {
         if (code == null || code.length() == 0) {
@@ -2750,7 +2698,6 @@ public enum LanguageAlpha3Code {
         return code;
     }
 
-
     public static List<LanguageAlpha3Code> findByName(String regex) {
         if (regex == null) {
             throw new IllegalArgumentException("regex is null.");
@@ -2760,7 +2707,6 @@ public enum LanguageAlpha3Code {
 
         return findByName(pattern);
     }
-
 
     public static List<LanguageAlpha3Code> findByName(Pattern pattern) {
         if (pattern == null) {
@@ -2776,5 +2722,46 @@ public enum LanguageAlpha3Code {
         }
 
         return list;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LanguageCode getAlpha2() {
+        return null;
+    }
+
+    public Usage getUsage() {
+        return Usage.COMMON;
+    }
+
+    public LanguageAlpha3Code getSynonym() {
+        return this;
+    }
+
+    public LanguageAlpha3Code getAlpha3B() {
+        if (getUsage() == Usage.BIBLIOGRAPHY) {
+            return this;
+        } else {
+            return getSynonym();
+        }
+    }
+
+    public LanguageAlpha3Code getAlpha3T() {
+        if (getUsage() == Usage.TERMINOLOGY) {
+            return this;
+        } else {
+            return getSynonym();
+        }
+    }
+
+
+    public enum Usage {
+        TERMINOLOGY,
+
+        BIBLIOGRAPHY,
+
+        COMMON
     }
 }

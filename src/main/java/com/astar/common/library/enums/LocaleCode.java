@@ -404,41 +404,13 @@ public enum LocaleCode {
         }
     }
 
-
-    public LanguageCode getLanguage() {
-        return language;
-    }
-
-
-    public CountryCode getCountry() {
-        return country;
-    }
-
-
-    @Override
-    public String toString() {
-        return string;
-    }
-
-
-    public Locale toLocale() {
-        if (country != null) {
-            return new Locale(language.name(), country.name());
-        } else {
-            return new Locale(language.name());
-        }
-    }
-
-
     public static LocaleCode getByCode(String code) {
         return getByCode(code, true);
     }
 
-
     public static LocaleCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
     }
-
 
     public static LocaleCode getByCode(String code, boolean caseSensitive) {
         if (code == null) {
@@ -461,16 +433,13 @@ public enum LocaleCode {
         }
     }
 
-
     public static LocaleCode getByCode(String language, String country) {
         return getByCode(language, country, true);
     }
 
-
     public static LocaleCode getByCodeIgnoreCase(String language, String country) {
         return getByCode(language, country, false);
     }
-
 
     public static LocaleCode getByCode(String language, String country, boolean caseSensitive) {
         language = LanguageCode.canonicalize(language, caseSensitive);
@@ -492,7 +461,6 @@ public enum LocaleCode {
         }
     }
 
-
     public static LocaleCode getByLocale(Locale locale) {
         if (locale == null) {
             return null;
@@ -509,7 +477,6 @@ public enum LocaleCode {
 
         return getByCode(language, country, true);
     }
-
 
     private static LocaleCode getByCombinedCode(
             String code, boolean caseSensitive, int splitPosition) {
@@ -529,7 +496,6 @@ public enum LocaleCode {
         return getByCode(language, country, caseSensitive);
     }
 
-
     private static LocaleCode getByEnumName(String name) {
         try {
             return Enum.valueOf(LocaleCode.class, name);
@@ -538,21 +504,17 @@ public enum LocaleCode {
         }
     }
 
-
     public static List<LocaleCode> getByLanguage(String language) {
         return getByLanguage(language, true);
     }
-
 
     public static List<LocaleCode> getByLanguageIgnoreCase(String language) {
         return getByLanguage(language, false);
     }
 
-
     public static List<LocaleCode> getByLanguage(String language, boolean caseSensitive) {
         return getByLanguage(LanguageCode.getByCode(language, caseSensitive));
     }
-
 
     public static List<LocaleCode> getByLanguage(LanguageCode language) {
         List<LocaleCode> list = new ArrayList<LocaleCode>();
@@ -570,21 +532,17 @@ public enum LocaleCode {
         return list;
     }
 
-
     public static List<LocaleCode> getByCountry(String country) {
         return getByCountry(country, true);
     }
-
 
     public static List<LocaleCode> getByCountryIgnoreCase(String country) {
         return getByCountry(country, false);
     }
 
-
     public static List<LocaleCode> getByCountry(String country, boolean caseSensitive) {
         return getByCountry(CountryCode.getByCode(country, caseSensitive));
     }
-
 
     public static List<LocaleCode> getByCountry(CountryCode country) {
         List<LocaleCode> list = new ArrayList<LocaleCode>();
@@ -602,7 +560,6 @@ public enum LocaleCode {
         return list;
     }
 
-
     private static Locale getUndefinedLocale() {
         try {
             Field root = Locale.class.getDeclaredField("ROOT");
@@ -610,6 +567,27 @@ public enum LocaleCode {
             return (Locale) root.get(null);
         } catch (Exception e) {
             return new Locale("", "");
+        }
+    }
+
+    public LanguageCode getLanguage() {
+        return language;
+    }
+
+    public CountryCode getCountry() {
+        return country;
+    }
+
+    @Override
+    public String toString() {
+        return string;
+    }
+
+    public Locale toLocale() {
+        if (country != null) {
+            return new Locale(language.name(), country.name());
+        } else {
+            return new Locale(language.name());
         }
     }
 }

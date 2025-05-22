@@ -15,6 +15,38 @@ public class StringRule {
     private Boolean allowUnicode;
     private Boolean allowEmoji;
 
+    public Length getLength() {
+        return length;
+    }
+
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public CharacterRules getCharacterRules() {
+        return characterRules;
+    }
+
+    public WhitespaceRules getWhitespaceRules() {
+        return whitespaceRules;
+    }
+
+    public CasingRules getCasingRules() {
+        return casingRules;
+    }
+
+    public WordRules getWordRules() {
+        return wordRules;
+    }
+
+    public Boolean getAllowUnicode() {
+        return allowUnicode;
+    }
+
+    public Boolean getAllowEmoji() {
+        return allowEmoji;
+    }
+
     public static class Length {
         private Integer min;
         private Integer max;
@@ -112,37 +144,5 @@ public class StringRule {
         public List<String> getDisallowedWords() {
             return disallowedWords;
         }
-    }
-
-    public Length getLength() {
-        return length;
-    }
-
-    public Pattern getPattern() {
-        return pattern;
-    }
-
-    public CharacterRules getCharacterRules() {
-        return characterRules;
-    }
-
-    public WhitespaceRules getWhitespaceRules() {
-        return whitespaceRules;
-    }
-
-    public CasingRules getCasingRules() {
-        return casingRules;
-    }
-
-    public WordRules getWordRules() {
-        return wordRules;
-    }
-
-    public Boolean getAllowUnicode() {
-        return allowUnicode;
-    }
-
-    public Boolean getAllowEmoji() {
-        return allowEmoji;
     }
 }

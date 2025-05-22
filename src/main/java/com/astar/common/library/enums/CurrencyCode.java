@@ -493,55 +493,13 @@ public enum CurrencyCode {
         this.countryList = Collections.unmodifiableList(Arrays.asList(countries));
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-
-    public int getNumeric() {
-        return numeric;
-    }
-
-
-    public int getMinorUnit() {
-        return minorUnit;
-    }
-
-
-    public List<CountryCode> getCountryList() {
-        return countryList;
-    }
-
-
-    public boolean isFund() {
-        return false;
-    }
-
-
-    public boolean isPreciousMetal() {
-        return false;
-    }
-
-
-    public Currency getCurrency() {
-        try {
-            return Currency.getInstance(this.name());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
-
-
     public static CurrencyCode getByCode(String code) {
         return getByCode(code, true);
     }
 
-
     public static CurrencyCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
     }
-
 
     public static CurrencyCode getByCode(String code, boolean caseSensitive) {
         code = canonicalize(code, caseSensitive);
@@ -557,7 +515,6 @@ public enum CurrencyCode {
         }
     }
 
-
     public static CurrencyCode getByCode(int code) {
         if (code <= 0) {
             return null;
@@ -565,7 +522,6 @@ public enum CurrencyCode {
 
         return numericMap.get(code);
     }
-
 
     private static String canonicalize(String code, boolean caseSensitive) {
         if (code == null || code.length() == 0) {
@@ -579,21 +535,17 @@ public enum CurrencyCode {
         }
     }
 
-
     public static List<CurrencyCode> getByCountry(String country) {
         return getByCountry(country, true);
     }
-
 
     public static List<CurrencyCode> getByCountryIgnoreCase(String country) {
         return getByCountry(country, false);
     }
 
-
     public static List<CurrencyCode> getByCountry(String country, boolean caseSensitive) {
         return getByCountry(CountryCode.getByCode(country, caseSensitive));
     }
-
 
     public static List<CurrencyCode> getByCountry(CountryCode country) {
         List<CurrencyCode> list = new ArrayList<CurrencyCode>();
@@ -613,7 +565,6 @@ public enum CurrencyCode {
         return list;
     }
 
-
     public static List<CurrencyCode> findByName(String regex) {
         if (regex == null) {
             throw new IllegalArgumentException("regex is null.");
@@ -623,7 +574,6 @@ public enum CurrencyCode {
 
         return findByName(pattern);
     }
-
 
     public static List<CurrencyCode> findByName(Pattern pattern) {
         if (pattern == null) {
@@ -639,5 +589,37 @@ public enum CurrencyCode {
         }
 
         return list;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNumeric() {
+        return numeric;
+    }
+
+    public int getMinorUnit() {
+        return minorUnit;
+    }
+
+    public List<CountryCode> getCountryList() {
+        return countryList;
+    }
+
+    public boolean isFund() {
+        return false;
+    }
+
+    public boolean isPreciousMetal() {
+        return false;
+    }
+
+    public Currency getCurrency() {
+        try {
+            return Currency.getInstance(this.name());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }

@@ -49,8 +49,6 @@ public enum LengthScaleUnit {
 
     CUSTOM("custom", BigDecimal.ONE); // Placeholder for custom units
 
-    private final String symbol;
-    private final BigDecimal toMetersFactor;
     private static final Map<String, LengthScaleUnit> symbolMap = new HashMap<>();
 
     static {
@@ -59,9 +57,51 @@ public enum LengthScaleUnit {
         }
     }
 
+    private final String symbol;
+    private final BigDecimal toMetersFactor;
+
     LengthScaleUnit(String symbol, BigDecimal toMetersFactor) {
         this.symbol = symbol;
         this.toMetersFactor = toMetersFactor;
+    }
+
+    /**
+     * Converts a value from one length unit to another
+     */
+    public static BigDecimal convert(BigDecimal value, LengthScaleUnit from, LengthScaleUnit to) {
+        BigDecimal meters = from.toMeters(value);
+        return to.fromMeters(meters);
+    }
+
+    /**
+     * Gets a LengthScaleUnit by its symbol
+     */
+    public static LengthScaleUnit fromSymbol(String symbol) {
+        LengthScaleUnit unit = symbolMap.get(symbol.toLowerCase());
+        if (unit == null) {
+            throw new IllegalArgumentException("Unknown length unit symbol: " + symbol);
+        }
+        return unit;
+    }
+
+    /**
+     * Dynamically creates a custom unit
+     */
+    public static LengthScaleUnit createCustomUnit(String symbol, BigDecimal toMetersFactor) {
+        try {
+            java.lang.reflect.Field symbolField = LengthScaleUnit.class.getDeclaredField("symbol");
+            symbolField.setAccessible(true);
+            symbolField.set(CUSTOM, symbol);
+
+            java.lang.reflect.Field factorField = LengthScaleUnit.class.getDeclaredField(
+                    "toMetersFactor");
+            factorField.setAccessible(true);
+            factorField.set(CUSTOM, toMetersFactor);
+
+            return CUSTOM;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create custom unit", e);
+        }
     }
 
     /**
@@ -79,14 +119,6 @@ public enum LengthScaleUnit {
     }
 
     /**
-     * Converts a value from one length unit to another
-     */
-    public static BigDecimal convert(BigDecimal value, LengthScaleUnit from, LengthScaleUnit to) {
-        BigDecimal meters = from.toMeters(value);
-        return to.fromMeters(meters);
-    }
-
-    /**
      * Formats a length value with its unit symbol
      */
     public String format(BigDecimal value) {
@@ -98,17 +130,6 @@ public enum LengthScaleUnit {
      */
     public String format(BigDecimal value, int precision) {
         return value.setScale(precision, RoundingMode.HALF_UP).toString() + " " + symbol;
-    }
-
-    /**
-     * Gets a LengthScaleUnit by its symbol
-     */
-    public static LengthScaleUnit fromSymbol(String symbol) {
-        LengthScaleUnit unit = symbolMap.get(symbol.toLowerCase());
-        if (unit == null) {
-            throw new IllegalArgumentException("Unknown length unit symbol: " + symbol);
-        }
-        return unit;
     }
 
     /**
@@ -144,25 +165,5 @@ public enum LengthScaleUnit {
      */
     public boolean isAstronomical() {
         return this.compareTo(KILOMETER) > 0;
-    }
-
-    /**
-     * Dynamically creates a custom unit
-     */
-    public static LengthScaleUnit createCustomUnit(String symbol, BigDecimal toMetersFactor) {
-        try {
-            java.lang.reflect.Field symbolField = LengthScaleUnit.class.getDeclaredField("symbol");
-            symbolField.setAccessible(true);
-            symbolField.set(CUSTOM, symbol);
-
-            java.lang.reflect.Field factorField = LengthScaleUnit.class.getDeclaredField(
-                    "toMetersFactor");
-            factorField.setAccessible(true);
-            factorField.set(CUSTOM, toMetersFactor);
-
-            return CUSTOM;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create custom unit", e);
-        }
     }
 }

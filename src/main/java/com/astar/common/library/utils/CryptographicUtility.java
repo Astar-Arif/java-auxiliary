@@ -15,11 +15,11 @@ import java.util.Base64;
 //TODO ADD MORE
 public abstract class CryptographicUtility {
 
-    private static boolean isInitializedEncryption = false;
     private static final String AES_GCM_NO_PADDING = "AES/GCM/NoPadding";
     private static final int AES_KEY_SIZE = 256;
     private static final int GCM_TAG_LENGTH = 128; // !BITS
     private static final int GCM_IV_LENGTH = 12; // !2 BYTES = 96 BITS
+    private static boolean isInitializedEncryption = false;
 
     /**
      * Run to add BouncyCastleProvider

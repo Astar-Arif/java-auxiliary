@@ -524,26 +524,13 @@ public enum ScriptCode {
         this.name = name;
     }
 
-
-    public int getNumeric() {
-        return numeric;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-
     public static ScriptCode getByCode(String code) {
         return getByCode(code, true);
     }
 
-
     public static ScriptCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
     }
-
 
     public static ScriptCode getByCode(String code, boolean caseSensitive) {
         if (code == null) {
@@ -568,7 +555,6 @@ public enum ScriptCode {
         }
     }
 
-
     public static ScriptCode getByCode(int code) {
         if (code <= 0) {
             return null;
@@ -576,7 +562,6 @@ public enum ScriptCode {
 
         return numericMap.get(code);
     }
-
 
     private static String canonicalize(String code, boolean caseSensitive) {
         if (code == null || code.length() == 0) {
@@ -619,7 +604,6 @@ public enum ScriptCode {
         }
     }
 
-
     public static List<ScriptCode> findByName(String regex) {
         if (regex == null) {
             throw new IllegalArgumentException("regex is null.");
@@ -629,7 +613,6 @@ public enum ScriptCode {
 
         return findByName(pattern);
     }
-
 
     public static List<ScriptCode> findByName(Pattern pattern) {
         if (pattern == null) {
@@ -645,5 +628,13 @@ public enum ScriptCode {
         }
 
         return list;
+    }
+
+    public int getNumeric() {
+        return numeric;
+    }
+
+    public String getName() {
+        return name;
     }
 }

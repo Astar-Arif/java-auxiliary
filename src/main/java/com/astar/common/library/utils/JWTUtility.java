@@ -11,6 +11,9 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 
 public class JWTUtility {
@@ -28,11 +31,13 @@ public class JWTUtility {
      * @throws JOSEException
      * @throws KeyLengthException
      */
+//    TODO ENHANCE
     public static String generateJWTToken(
             Map<String, Object> claims,
             JWEAlgorithm algorithm,
             EncryptionMethod encryptionMethod,
-            RSAPublicKey publicKey
+            RSAPublicKey publicKey,
+            Duration timeToLive
     ) throws JOSEException {
         //*1. The HEADER
         JWEHeader header = new JWEHeader(algorithm, encryptionMethod);
@@ -40,6 +45,11 @@ public class JWTUtility {
         for (Map.Entry<String, Object> data : claims.entrySet()) {
             JWTBuilder = JWTBuilder.claim(data.getKey(), data.getValue());
         }
+
+        Instant now = Instant.now();
+        JWTBuilder = JWTBuilder
+                .issueTime(Date.from(now))
+                .expirationTime(Date.from(now.plus(timeToLive)));
         //*2. The PAYLOAD
         JWTClaimsSet claimsSet = JWTBuilder.build();
         //*3. The Signature

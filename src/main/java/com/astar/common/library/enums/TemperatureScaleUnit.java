@@ -63,8 +63,6 @@ public enum TemperatureScaleUnit {
     private static final double FAHRENHEIT_OFFSET = 32;
     private static final double FAHRENHEIT_SCALE = 5.0 / 9.0;
     private static final double RANKINE_SCALE = 5.0 / 9.0;
-
-    private final String symbol;
     private static final Map<String, TemperatureScaleUnit> symbolMap = new HashMap<>();
 
     static {
@@ -73,21 +71,15 @@ public enum TemperatureScaleUnit {
         }
     }
 
+    private final String symbol;
+
     TemperatureScaleUnit(String symbol) {
         this.symbol = symbol;
     }
 
-    public abstract double toKelvin(double value);
-
-    public abstract double fromKelvin(double kelvin);
-
     public static double convert(double value, TemperatureScaleUnit from, TemperatureScaleUnit to) {
         double kelvin = from.toKelvin(value);
         return to.fromKelvin(kelvin);
-    }
-
-    public String getSymbol() {
-        return symbol;
     }
 
     public static TemperatureScaleUnit fromSymbol(String symbol) {
@@ -96,5 +88,13 @@ public enum TemperatureScaleUnit {
             throw new IllegalArgumentException("Unknown temperature unit: " + symbol);
         }
         return unit;
+    }
+
+    public abstract double toKelvin(double value);
+
+    public abstract double fromKelvin(double kelvin);
+
+    public String getSymbol() {
+        return symbol;
     }
 }

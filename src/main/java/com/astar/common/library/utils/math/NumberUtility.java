@@ -45,8 +45,6 @@ import java.math.BigInteger;
 
 public abstract class NumberUtility extends NumberUtils {
 
-    public static Logger LOGGER = LoggerFactory.getLogger(NumberUtility.class);
-
     public static final char[] CHARACTER_SET = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
@@ -56,7 +54,7 @@ public abstract class NumberUtility extends NumberUtils {
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z'
     };
-
+    public static Logger LOGGER = LoggerFactory.getLogger(NumberUtility.class);
 
     public static String toBase(BigInteger number, byte base) throws Exception {
         if (number == null) throw new Exception("Number is null");

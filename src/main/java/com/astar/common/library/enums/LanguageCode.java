@@ -1344,31 +1344,13 @@ public enum LanguageCode {
     private LanguageCode() {
     }
 
-
-    public String getName() {
-        return getAlpha3().getName();
-    }
-
-
-    public Locale toLocale() {
-        return new Locale(name());
-    }
-
-
-    public LanguageAlpha3Code getAlpha3() {
-        return null;
-    }
-
-
     public static LanguageCode getByCode(String code) {
         return getByCode(code, true);
     }
 
-
     public static LanguageCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
     }
-
 
     public static LanguageCode getByCode(String code, boolean caseSensitive) {
         code = canonicalize(code, caseSensitive);
@@ -1398,7 +1380,6 @@ public enum LanguageCode {
         return alpha3.getAlpha2();
     }
 
-
     static LanguageCode getByEnumName(String name) {
         try {
             return Enum.valueOf(LanguageCode.class, name);
@@ -1406,7 +1387,6 @@ public enum LanguageCode {
             return null;
         }
     }
-
 
     public static LanguageCode getByLocale(Locale locale) {
         if (locale == null) {
@@ -1421,7 +1401,6 @@ public enum LanguageCode {
 
         return getByCode(language, true);
     }
-
 
     static String canonicalize(String code, boolean caseSensitive) {
         if (code == null || code.length() == 0) {
@@ -1450,7 +1429,6 @@ public enum LanguageCode {
         }
     }
 
-
     public static List<LanguageCode> findByName(String regex) {
         if (regex == null) {
             throw new IllegalArgumentException("regex is null.");
@@ -1460,7 +1438,6 @@ public enum LanguageCode {
 
         return findByName(pattern);
     }
-
 
     public static List<LanguageCode> findByName(Pattern pattern) {
         if (pattern == null) {
@@ -1476,5 +1453,17 @@ public enum LanguageCode {
         }
 
         return list;
+    }
+
+    public String getName() {
+        return getAlpha3().getName();
+    }
+
+    public Locale toLocale() {
+        return new Locale(name());
+    }
+
+    public LanguageAlpha3Code getAlpha3() {
+        return null;
     }
 }

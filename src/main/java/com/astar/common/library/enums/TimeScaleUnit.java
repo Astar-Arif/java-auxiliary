@@ -76,8 +76,6 @@ public enum TimeScaleUnit {
     CUSTOM("custom", BigDecimal.ONE);                    // Placeholder for custom units
 
 
-    private final String symbol;
-    private final BigDecimal toSecondsFactor;
     private static final Map<String, TimeScaleUnit> symbolMap = new HashMap<>();
 
     static {
@@ -86,9 +84,48 @@ public enum TimeScaleUnit {
         }
     }
 
+    private final String symbol;
+    private final BigDecimal toSecondsFactor;
+
     TimeScaleUnit(String symbol, BigDecimal toSecondsFactor) {
         this.symbol = symbol;
         this.toSecondsFactor = toSecondsFactor;
+    }
+
+    /**
+     * Converts a value from one time unit to another
+     */
+    public static BigDecimal convert(BigDecimal value, TimeScaleUnit from, TimeScaleUnit to) {
+        BigDecimal seconds = from.toSeconds(value);
+        return to.fromSeconds(seconds);
+    }
+
+    /**
+     * Gets a TimeScaleUnit by its symbol
+     */
+    public static TimeScaleUnit fromSymbol(String symbol) {
+        TimeScaleUnit unit = symbolMap.get(symbol.toLowerCase());
+        if (unit == null) {
+            throw new IllegalArgumentException("Unknown time unit symbol: " + symbol);
+        }
+        return unit;
+    }
+
+    public static TimeScaleUnit createCustomUnit(String symbol, BigDecimal toSecondsFactor) {
+        try {
+            java.lang.reflect.Field symbolField = TimeScaleUnit.class.getDeclaredField("symbol");
+            symbolField.setAccessible(true);
+            symbolField.set(CUSTOM, symbol);
+
+            java.lang.reflect.Field factorField = TimeScaleUnit.class.getDeclaredField(
+                    "toSecondsFactor");
+            factorField.setAccessible(true);
+            factorField.set(CUSTOM, toSecondsFactor);
+
+            return CUSTOM;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create custom unit", e);
+        }
     }
 
     /**
@@ -106,14 +143,6 @@ public enum TimeScaleUnit {
     }
 
     /**
-     * Converts a value from one time unit to another
-     */
-    public static BigDecimal convert(BigDecimal value, TimeScaleUnit from, TimeScaleUnit to) {
-        BigDecimal seconds = from.toSeconds(value);
-        return to.fromSeconds(seconds);
-    }
-
-    /**
      * Formats a time value with its unit symbol
      */
     public String format(BigDecimal value) {
@@ -125,17 +154,6 @@ public enum TimeScaleUnit {
      */
     public String format(BigDecimal value, int precision) {
         return value.setScale(precision, RoundingMode.HALF_UP).toString() + " " + symbol;
-    }
-
-    /**
-     * Gets a TimeScaleUnit by its symbol
-     */
-    public static TimeScaleUnit fromSymbol(String symbol) {
-        TimeScaleUnit unit = symbolMap.get(symbol.toLowerCase());
-        if (unit == null) {
-            throw new IllegalArgumentException("Unknown time unit symbol: " + symbol);
-        }
-        return unit;
     }
 
     /**
@@ -171,22 +189,5 @@ public enum TimeScaleUnit {
      */
     public boolean isAstronomical() {
         return this.compareTo(CENTURY) > 0;
-    }
-
-    public static TimeScaleUnit createCustomUnit(String symbol, BigDecimal toSecondsFactor) {
-        try {
-            java.lang.reflect.Field symbolField = TimeScaleUnit.class.getDeclaredField("symbol");
-            symbolField.setAccessible(true);
-            symbolField.set(CUSTOM, symbol);
-
-            java.lang.reflect.Field factorField = TimeScaleUnit.class.getDeclaredField(
-                    "toSecondsFactor");
-            factorField.setAccessible(true);
-            factorField.set(CUSTOM, toSecondsFactor);
-
-            return CUSTOM;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create custom unit", e);
-        }
     }
 }

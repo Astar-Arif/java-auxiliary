@@ -111,8 +111,6 @@ public enum MassScaleUnit {
     // Abstract/customizable unit
     CUSTOM("custom", BigDecimal.ONE);                    // Placeholder for custom units
 
-    private final String symbol;
-    private final BigDecimal toKilogramFactor;
     private static final Map<String, MassScaleUnit> symbolMap = new HashMap<>();
 
     static {
@@ -126,9 +124,48 @@ public enum MassScaleUnit {
         }
     }
 
+    private final String symbol;
+    private final BigDecimal toKilogramFactor;
+
     MassScaleUnit(String symbol, BigDecimal toKilogramFactor) {
         this.symbol = symbol;
         this.toKilogramFactor = toKilogramFactor;
+    }
+
+    /**
+     * Converts a value from one mass unit to another
+     */
+    public static BigDecimal convert(BigDecimal value, MassScaleUnit from, MassScaleUnit to) {
+        BigDecimal kilograms = from.toKilograms(value);
+        return to.fromKilograms(kilograms);
+    }
+
+    /**
+     * Gets a MassScaleUnit by its symbol
+     */
+    public static MassScaleUnit fromSymbol(String symbol) {
+        MassScaleUnit unit = symbolMap.get(symbol.toLowerCase());
+        if (unit == null) {
+            throw new IllegalArgumentException("Unknown mass unit symbol: " + symbol);
+        }
+        return unit;
+    }
+
+    public static MassScaleUnit createCustomUnit(String symbol, BigDecimal toKilogramFactor) {
+        try {
+            java.lang.reflect.Field symbolField = MassScaleUnit.class.getDeclaredField("symbol");
+            symbolField.setAccessible(true);
+            symbolField.set(CUSTOM, symbol);
+
+            java.lang.reflect.Field factorField = MassScaleUnit.class.getDeclaredField(
+                    "toKilogramFactor");
+            factorField.setAccessible(true);
+            factorField.set(CUSTOM, toKilogramFactor);
+
+            return CUSTOM;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create custom unit", e);
+        }
     }
 
     /**
@@ -146,14 +183,6 @@ public enum MassScaleUnit {
     }
 
     /**
-     * Converts a value from one mass unit to another
-     */
-    public static BigDecimal convert(BigDecimal value, MassScaleUnit from, MassScaleUnit to) {
-        BigDecimal kilograms = from.toKilograms(value);
-        return to.fromKilograms(kilograms);
-    }
-
-    /**
      * Formats a mass value with its unit symbol
      */
     public String format(BigDecimal value) {
@@ -165,17 +194,6 @@ public enum MassScaleUnit {
      */
     public String format(BigDecimal value, int precision) {
         return value.setScale(precision, RoundingMode.HALF_UP).toString() + " " + symbol;
-    }
-
-    /**
-     * Gets a MassScaleUnit by its symbol
-     */
-    public static MassScaleUnit fromSymbol(String symbol) {
-        MassScaleUnit unit = symbolMap.get(symbol.toLowerCase());
-        if (unit == null) {
-            throw new IllegalArgumentException("Unknown mass unit symbol: " + symbol);
-        }
-        return unit;
     }
 
     /**
@@ -237,22 +255,5 @@ public enum MassScaleUnit {
         return this == GRAIN_TROY || this == PENNYWEIGHT || this == OUNCE_TROY ||
                 this == POUND_TROY || this == CARAT_WEIGHT || this == CARAT_GOLD ||
                 this == POINT;
-    }
-
-    public static MassScaleUnit createCustomUnit(String symbol, BigDecimal toKilogramFactor) {
-        try {
-            java.lang.reflect.Field symbolField = MassScaleUnit.class.getDeclaredField("symbol");
-            symbolField.setAccessible(true);
-            symbolField.set(CUSTOM, symbol);
-
-            java.lang.reflect.Field factorField = MassScaleUnit.class.getDeclaredField(
-                    "toKilogramFactor");
-            factorField.setAccessible(true);
-            factorField.set(CUSTOM, toKilogramFactor);
-
-            return CUSTOM;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create custom unit", e);
-        }
     }
 }

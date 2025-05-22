@@ -35,4 +35,14 @@ public abstract class ArrayUtility extends ArrayUtils {
         return arr.stream().map(mapper).collect(Collectors.toList());
     }
 
+    public static <T> List<T> slice(List<T> queryResult, int startIndex, int endIndex) {
+        if (startIndex > endIndex)
+            throw new IllegalArgumentException("Illegal startIndex or endIndex");
+        try {
+            return queryResult.subList(startIndex, endIndex);
+        } catch (IndexOutOfBoundsException e) {
+            return List.of();
+        }
+
+    }
 }
