@@ -384,6 +384,7 @@ public enum CountryCode {
     private final String alpha3;
     private final int numeric;
     private final Assignment assignment;
+
     private CountryCode(String name, String alpha3, int numeric, Assignment assignment) {
         this.name = name;
         this.alpha3 = alpha3;
