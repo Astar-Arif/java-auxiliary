@@ -1,7 +1,8 @@
 package com.astar.common.library;
 
-public interface BaseEnum {
-    String getReferenceValue();
+import java.util.Map;
 
-    String displayValue();
+public interface BaseEnum{
+    String getEnumName();
+    String toInfo();
 }
