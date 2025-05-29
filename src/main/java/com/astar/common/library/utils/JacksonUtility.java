@@ -46,4 +46,7 @@ public abstract class JacksonUtility {
     }
 
 
+    public static <T> T stringToObject(String requestBody, Class<T> clazz) throws JsonProcessingException {
+        return OBJECT_MAPPER.readValue(requestBody, clazz);
+    }
 }

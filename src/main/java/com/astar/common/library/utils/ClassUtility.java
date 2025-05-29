@@ -12,7 +12,6 @@ public abstract class ClassUtility extends ClassUtils {
         if (clazz == null || field == null || field.isEmpty()) {
             throw new IllegalArgumentException("Class and field name must not be null or empty.");
         }
-
         while (clazz != null) {
             try {
                 Field declaredField = clazz.getDeclaredField(field);

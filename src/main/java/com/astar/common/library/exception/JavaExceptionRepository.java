@@ -32,9 +32,6 @@ public enum JavaExceptionRepository {
         this.field = field;
     }
 
-    public static void main(String[] args) {
-
-    }
 
     public int getExceptionId() {
         return exceptionId;

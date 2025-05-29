@@ -42,4 +42,8 @@ public abstract class StringUtility extends StringUtils {
         }
         return phoneNumberUtil.isValidNumber(phoneNumber);
     }
+
+    public static byte[] toByteArray(String str){
+        return str.getBytes();
+    }
 }

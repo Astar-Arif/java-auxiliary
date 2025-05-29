@@ -2,6 +2,7 @@ package com.astar.common.library.utils;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,6 +44,20 @@ public abstract class ArrayUtility extends ArrayUtils {
         } catch (IndexOutOfBoundsException e) {
             return List.of();
         }
+    }
 
+    public static String byteArrToString(byte[] arr){
+        return ArrayUtils.toString(arr);
+    }
+
+    public static void main(String[] args) {
+        String a = "hahaha";
+        byte[] arr = a.getBytes();
+        for (int i = 0; i < arr.length; i++){
+            System.out.print(arr[i]);
+        }
+        System.out.println("");
+        String b = ArrayUtils.toString(arr);
+        System.out.println(b);
     }
 }

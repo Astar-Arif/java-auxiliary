@@ -93,13 +93,10 @@ public abstract class ParserUtility {
         if (value == null) {
             return null;
         }
-
         if (target.isInstance(value)) {
             return (T) value;
         }
-
         String strValue = value.toString().trim();
-
         if (Number.class.isAssignableFrom(target)) {
             return (T) handleParseNumber(target, strValue);
         } else if (Temporal.class.isAssignableFrom(target)) {
@@ -111,7 +108,6 @@ public abstract class ParserUtility {
         } else if (target == String.class) {
             return (T) strValue;
         }
-
         throw new IllegalArgumentException("Unsupported type: " + target.getName());
     }
 

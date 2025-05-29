@@ -10,15 +10,25 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Locale;
 
 //TODO ADD MORE
+
+/**
+ * author : Arif
+ * Notes :
+ * 1. Method naming conventions [RETURN TYPES][ALGORITHM][ACTION]
+ */
 public abstract class CryptographicUtility {
 
     private static final String AES_GCM_NO_PADDING = "AES/GCM/NoPadding";
     private static final int AES_KEY_SIZE = 256;
     private static final int GCM_TAG_LENGTH = 128; // !BITS
     private static final int GCM_IV_LENGTH = 12; // !2 BYTES = 96 BITS
+    private static final int SALT_LENGTH = 64;
     private static boolean isInitializedEncryption = false;
 
     /**
@@ -29,6 +39,11 @@ public abstract class CryptographicUtility {
         isInitializedEncryption = true;
     }
 
+    /**
+     * *********************************
+     * *--------  AES SECTION  --------*
+     * *********************************
+     */
     /**
      * @param plainText
      * @return
@@ -155,5 +170,114 @@ public abstract class CryptographicUtility {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256", "BC");
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, AES_KEY_SIZE);
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
+    }
+
+    /**
+     * *********************************
+     * *--------  RSA SECTION  --------*
+     * *********************************
+     */
+
+    public static byte[] encrypt(
+            PublicKey key, String plainText, String provider,
+            String transformation
+    ) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+        Cipher cipher = Cipher.getInstance(transformation, provider);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        return cipher.doFinal(plainText.getBytes());
+    }
+
+    public static byte[] decrypt(
+            PrivateKey key, byte[] cipherArr, String provider,
+            String transformation
+    ) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+        Cipher cipher = Cipher.getInstance(transformation, provider);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        return cipher.doFinal(cipherArr);
+    }
+
+    public static String encryptToBase64(
+            PublicKey key, String plainText, String provider,
+            String transformation
+    ) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+        Cipher cipher = Cipher.getInstance(transformation, provider);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] cipherArr = cipher.doFinal(StringUtility.toByteArray(plainText));
+        return Base64.getEncoder().encodeToString(cipherArr);
+    }
+
+    public static String decryptFromBase64(
+            PrivateKey key, String cipherText, String provider,
+            String transformation
+    ) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchProviderException {
+        Cipher cipher = Cipher.getInstance(transformation, provider);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decodedBytes = Base64.getDecoder().decode(cipherText);
+        byte[] plainArr = cipher.doFinal(decodedBytes);
+        return new String(plainArr);
+    }
+
+    public static String encryptToBase64(
+            String publicKeyStr, String plainText, String provider,
+            String transformation, String keyAlgo
+    ) throws GeneralSecurityException {
+        Cipher cipher = Cipher.getInstance(transformation, provider);
+        Key publicKey = getKeyFromString(publicKeyStr, PublicKey.class, keyAlgo);
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] cipherArr = cipher.doFinal(StringUtility.toByteArray(plainText));
+        return Base64.getEncoder().encodeToString(cipherArr);
+    }
+
+    public static String decryptFromBase64(
+            String privateKeyStr, String cipherText, String provider,
+            String transformation, String keyAlgo
+    ) throws GeneralSecurityException {
+        Cipher cipher = Cipher.getInstance(transformation, provider);
+        Key privateKey = getKeyFromString(privateKeyStr, PrivateKey.class, keyAlgo);
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] decodedBytes = Base64.getDecoder().decode(cipherText);
+        byte[] plainArr = cipher.doFinal(decodedBytes);
+        return new String(plainArr);
+    }
+
+    private static <T> T getKeyFromString(
+            String keyText, Class<T> clazz, String algorithm) throws GeneralSecurityException {
+        byte[] keyBytes = Base64.getDecoder().decode(keyText);
+        KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+        if (PrivateKey.class.isAssignableFrom(clazz)) {
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+            PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+            return clazz.cast(privateKey);
+        } else if (PublicKey.class.isAssignableFrom(clazz)) {
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+            return clazz.cast(publicKey);
+        } else {
+            throw new IllegalArgumentException("Unsupported key class: " + clazz.getName());
+        }
+    }
+
+
+    public static String createSignToBase64(
+            PrivateKey key, String plainText, String algorithm, String provider) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
+        Signature signer = Signature.getInstance(algorithm, provider);
+        signer.initSign(key);
+        signer.update(plainText.getBytes());
+        byte[] signatureResultArr = signer.sign();
+        return Base64.getEncoder().encodeToString(signatureResultArr);
+    }
+
+    public static boolean  isVerifiedSignFromBase64(
+            PublicKey key, String plainText, String base64Signature, String algorithm, String provider ) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
+        Signature signer = Signature.getInstance(algorithm, provider);
+        signer.initVerify(key);
+        signer.update(plainText.getBytes());
+        return signer.verify(Base64.getDecoder().decode(base64Signature));
+    }
+
+    public static String generateSalt() {
+        byte[] salt = new byte[SALT_LENGTH];
+        new SecureRandom().nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
     }
 }
