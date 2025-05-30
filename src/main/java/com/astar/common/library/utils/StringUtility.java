@@ -3,7 +3,7 @@ package com.astar.common.library.utils;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import com.vdurmont.emoji.EmojiManager;
+import net.fellbaum.jemoji.EmojiManager;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +22,11 @@ public abstract class StringUtility extends StringUtils {
         return (res == 0) ? 1 : res;
 
     }
-
+//    TODO TEST THIS
     public static boolean isContainEmoji(String text) {
         if (text == null) return false;
-        return EmojiManager.containsEmoji(text);
+        return EmojiManager.containsAnyEmoji(text);
     }
-
     public static boolean isMobileNumber(String mobileNo) {
         if (mobileNo == null) return false;
         if (!mobileNo.startsWith("+")) mobileNo = '+' + mobileNo;
@@ -42,8 +41,9 @@ public abstract class StringUtility extends StringUtils {
         }
         return phoneNumberUtil.isValidNumber(phoneNumber);
     }
-
     public static byte[] toByteArray(String str){
         return str.getBytes();
     }
+
+
 }

@@ -72,9 +72,9 @@
             <version>${guava.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.vdurmont</groupId>
-            <artifactId>emoji-java</artifactId>
-            <version>${emoji-java.version}</version>
+            <groupId>net.fellbaum</groupId>
+            <artifactId>jemoji</artifactId>
+            <version>${jemoji.version}</version>
         </dependency>
 
         <dependency>
