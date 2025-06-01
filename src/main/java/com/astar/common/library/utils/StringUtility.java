@@ -22,11 +22,13 @@ public abstract class StringUtility extends StringUtils {
         return (res == 0) ? 1 : res;
 
     }
-//    TODO TEST THIS
+
+    //    TODO TEST THIS
     public static boolean isContainEmoji(String text) {
         if (text == null) return false;
         return EmojiManager.containsAnyEmoji(text);
     }
+
     public static boolean isMobileNumber(String mobileNo) {
         if (mobileNo == null) return false;
         if (!mobileNo.startsWith("+")) mobileNo = '+' + mobileNo;
@@ -41,7 +43,8 @@ public abstract class StringUtility extends StringUtils {
         }
         return phoneNumberUtil.isValidNumber(phoneNumber);
     }
-    public static byte[] toByteArray(String str){
+
+    public static byte[] toByteArray(String str) {
         return str.getBytes();
     }
 

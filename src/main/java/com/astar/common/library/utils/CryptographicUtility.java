@@ -13,7 +13,6 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.Locale;
 
 //TODO ADD MORE
 
@@ -259,7 +258,9 @@ public abstract class CryptographicUtility {
 
 
     public static String createSignToBase64(
-            PrivateKey key, String plainText, String algorithm, String provider) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
+            PrivateKey key, String plainText, String algorithm,
+            String provider
+    ) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
         Signature signer = Signature.getInstance(algorithm, provider);
         signer.initSign(key);
         signer.update(plainText.getBytes());
@@ -267,8 +268,10 @@ public abstract class CryptographicUtility {
         return Base64.getEncoder().encodeToString(signatureResultArr);
     }
 
-    public static boolean  isVerifiedSignFromBase64(
-            PublicKey key, String plainText, String base64Signature, String algorithm, String provider ) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
+    public static boolean isVerifiedSignFromBase64(
+            PublicKey key, String plainText, String base64Signature, String algorithm,
+            String provider
+    ) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
         Signature signer = Signature.getInstance(algorithm, provider);
         signer.initVerify(key);
         signer.update(plainText.getBytes());
