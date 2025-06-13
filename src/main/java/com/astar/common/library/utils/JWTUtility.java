@@ -39,6 +39,8 @@ public class JWTUtility {
             RSAPublicKey publicKey,
             Duration timeToLive
     ) throws JOSEException {
+
+        // ENHANCE
         //*1. The HEADER
         JWEHeader header = new JWEHeader(algorithm, encryptionMethod);
         JWTClaimsSet.Builder JWTBuilder = new JWTClaimsSet.Builder();

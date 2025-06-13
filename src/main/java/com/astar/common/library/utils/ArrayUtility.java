@@ -59,4 +59,9 @@ public abstract class ArrayUtility extends ArrayUtils {
         String b = ArrayUtils.toString(arr);
         System.out.println(b);
     }
+
+    public static<T> List<T> toList(T[] arr) {
+        return List.of(arr);
+
+    }
 }
