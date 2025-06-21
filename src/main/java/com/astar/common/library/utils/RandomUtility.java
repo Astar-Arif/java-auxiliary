@@ -6,6 +6,9 @@ import org.apache.commons.text.RandomStringGenerator;
 //TODO ADD MORE
 public abstract class RandomUtility extends RandomUtils {
 
+    private final static RandomStringGenerator.Builder ALPHABET_BUILDER = new RandomStringGenerator.Builder().withinRange(
+            32, 126);
+
     public static String genRandomInteger(Integer start, Integer end) {
 //        TODO !!!!
         if (start == null || end == null) throw new IllegalArgumentException("Error type shi");
@@ -14,8 +17,7 @@ public abstract class RandomUtility extends RandomUtils {
     }
 
     public static String genRandomString(int length) {
-        return new RandomStringGenerator.Builder()
-                .withinRange(32, 126)
+        return ALPHABET_BUILDER
                 .get()
                 .generate(length);
     }

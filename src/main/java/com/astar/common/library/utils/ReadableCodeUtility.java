@@ -9,14 +9,14 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ReadableCodeUtility {
 
     public static BufferedImage generateQRCode(
-            String content, String logoMiddlePath, boolean insertLogoMiddle, int padding,
+            String content, String imageMiddlePath, boolean insertLogoMiddle, int padding,
             int magnitude, boolean isColored, int logoMiddlePadding
     ) throws IOException {
-
         QrCode qrCode = new QrCode();
         qrCode.setContent(content);
         qrCode.setPreferredEccLevel(QrCode.EccLevel.H);
@@ -38,20 +38,40 @@ public class ReadableCodeUtility {
                                                    bufferedImageType, padding);
             }
             if (resultImage == null) resultImage = qrImage;
-            if (insertLogoMiddle)
-                insertLogoMiddleInQR(resultImage, logoMiddlePath, qrCode.getPreferredEccLevel(),
-                                     qrRealWidth, qrRealHeight, logoMiddlePadding,
-                                     bufferedImageType);
+            if (insertLogoMiddle && !Objects.isNull(imageMiddlePath) && !imageMiddlePath.isEmpty())
+                insertImageMiddleInQR(resultImage, imageMiddlePath, qrCode.getPreferredEccLevel(),
+                                      qrRealWidth, qrRealHeight, logoMiddlePadding,
+                                      bufferedImageType);
             return resultImage;
         } finally {
-            System.out.println("Closing shit1");
             qrImageG2D.dispose();
-
         }
+    }
+
+
+    public static BufferedImage generateSimpleQRCode(String content) {
+        QrCode qrCode = new QrCode();
+        qrCode.setContent(content);
+        qrCode.setPreferredEccLevel(QrCode.EccLevel.M);
+        BufferedImage qrImage = new BufferedImage(qrCode.getWidth(), qrCode.getHeight(),
+                                                  BufferedImage.TYPE_BYTE_GRAY);
+        Graphics2D qrImageG2D = qrImage.createGraphics();
+        try {
+            Java2DRenderer qrRenderer = new Java2DRenderer(qrImageG2D, 1, Color.WHITE,
+                                                           Color.BLACK);
+            qrRenderer.render(qrCode);
+            return qrImage;
+        } finally {
+            qrImageG2D.dispose();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+
 
     }
 
-    private static void insertLogoMiddleInQR(
+    private static void insertImageMiddleInQR(
             BufferedImage resultImage, String logoMiddlePath, QrCode.EccLevel preferredEccLevel,
             int qrRealWidth, int qrRealHeight, int logoMiddlePadding, int bufferedImageType
     ) throws IOException {
@@ -126,7 +146,6 @@ public class ReadableCodeUtility {
             resultG2D.drawImage(qrImage, padding / 2, padding / 2, null);
             return resultImage;
         } finally {
-            System.out.println("Closing shit2");
             resultG2D.dispose();
         }
     }

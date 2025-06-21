@@ -11,6 +11,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static long sum(byte[] num) {
         long res = 0L;
         for (int i = 0; i < num.length; i++) {
@@ -18,6 +19,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static long sum(short[] num) {
         long res = 0L;
         for (int i = 0; i < num.length; i++) {
@@ -25,6 +27,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static long sum(int[] num) {
         long res = 0L;
         for (int i = 0; i < num.length; i++) {
@@ -32,6 +35,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static long sum(long[] num) {
         long res = 0L;
         for (int i = 0; i < num.length; i++) {
@@ -39,6 +43,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static double sum(double[] num) {
         long res = 0L;
         for (int i = 0; i < num.length; i++) {
@@ -46,6 +51,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static <T extends Number> T min(List<T> num) {
 //        TODO ENHANCE
         if (num.isEmpty() || num.getFirst() == null) throw new IllegalArgumentException("FUCK YOU");
@@ -57,6 +63,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static byte min(byte[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         byte res = num[0];
@@ -67,6 +74,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static short min(short[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         short res = num[0];
@@ -77,6 +85,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static int min(int[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         int res = num[0];
@@ -87,6 +96,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static long min(long[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         long res = num[0];
@@ -97,6 +107,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static <T extends Number> T max(List<T> num) {
 //        TODO ENHANCE
         if (num.isEmpty() || num.getFirst() == null) throw new IllegalArgumentException("FUCK YOU");
@@ -108,6 +119,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static byte max(byte[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         byte res = num[0];
@@ -118,6 +130,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static short max(short[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         short res = num[0];
@@ -128,6 +141,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static int max(int[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         int res = num[0];
@@ -138,6 +152,7 @@ public abstract class MathUtility {
         }
         return res;
     }
+
     public static long max(long[] num) {
         if (num.length == 0) throw new IllegalArgumentException("Fuck you");
         long res = num[0];

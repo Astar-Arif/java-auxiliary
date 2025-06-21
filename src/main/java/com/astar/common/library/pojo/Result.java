@@ -2,12 +2,11 @@ package com.astar.common.library.pojo;
 
 import com.astar.common.library.exception.AbstractException;
 import com.astar.common.library.exception.AbstractRuntimeException;
-import com.astar.common.library.exception.JWTAuthenticationException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class  Result<R> {
+public class Result<R> {
     private R res;
     private List<Exception> exceptions = new ArrayList<>();
 
@@ -32,7 +31,7 @@ public class  Result<R> {
     }
 
     public Exception find(String id) {
-    // TODO DECIDE TO ADD HANDLING IF ID IS NULL
+        // TODO DECIDE TO ADD HANDLING IF ID IS NULL
         for (int i = 0; i < this.exceptions.size(); i++) {
             Exception e = this.exceptions.get(i);
             if (e instanceof AbstractException ae) {

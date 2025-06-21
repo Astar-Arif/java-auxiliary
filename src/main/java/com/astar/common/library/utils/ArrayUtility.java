@@ -60,7 +60,7 @@ public abstract class ArrayUtility extends ArrayUtils {
         System.out.println(b);
     }
 
-    public static<T> List<T> toList(T[] arr) {
+    public static <T> List<T> toList(T[] arr) {
         return List.of(arr);
 
     }

@@ -24,6 +24,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * The type Rest utility.
  */
+
+
+// TODO LOG THE REQUEST BODY
 @Service
 public class RESTUtility {
     private final static Logger LOGGER = LoggerFactory.getLogger(RESTUtility.class);
@@ -97,7 +100,7 @@ public class RESTUtility {
         if (queryParams != null) {
             queryParams.forEach(uriBuilder::queryParam);
         }
-        LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
+        LOGGER.info("<1> Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
         return client
                 .options()
                 .uri(uriBuilder.toUriString())
@@ -151,7 +154,7 @@ public class RESTUtility {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.POST);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
-        LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
+        LOGGER.info("<2> Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
         return headersSpec
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
@@ -209,7 +212,7 @@ public class RESTUtility {
         WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PUT);
         WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
         WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
-        LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
+        LOGGER.info("<3> Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
         return headersSpec
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
@@ -267,7 +270,7 @@ public class RESTUtility {
             WebClient.UriSpec<WebClient.RequestBodySpec> uriSpec = client.method(HttpMethod.PATCH);
             WebClient.RequestBodySpec bodySpec = uriSpec.uri(uriBuilder.toUriString());
             WebClient.RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue(requestBody);
-            LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
+            LOGGER.info("<4> Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
             return headersSpec
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
@@ -322,7 +325,7 @@ public class RESTUtility {
             if (queryParams != null) {
                 queryParams.forEach(uriBuilder::queryParam);
             }
-            LOGGER.info("Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
+            LOGGER.info("<5> Sending Request To : {}", (baseUrl + uriBuilder.toUriString()));
             return client
                     .delete()
                     .uri(uriBuilder.toUriString())
@@ -346,7 +349,9 @@ public class RESTUtility {
      * @param requestBody         the request body
      * @param responseType        the response type
      * @return the t
+     *
      */
+//    TODO IMPLEMENT
     public <T> T options(
             String baseUrl,
             String uri,
@@ -359,13 +364,5 @@ public class RESTUtility {
             Class<T> responseType
     ) {
         return null;
-    }
-
-    /**
-     * The type Testing.
-     */
-    public static class Testing {
-        private int age;
-        private String name;
     }
 }
