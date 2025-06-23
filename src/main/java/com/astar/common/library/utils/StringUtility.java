@@ -48,5 +48,30 @@ public abstract class StringUtility extends StringUtils {
         return str.getBytes();
     }
 
+    public static String toCamelCase(String str) {
+        return null;
+    }
+
+    public static String to_snake_case(String str) {
+        byte caseType = detectCase(str);
+        return null;
+    }
+
+    public static String to_kebab_case(String str) {
+        byte caseType = detectCase(str);
+        return null;
+    }
+
+    public static String ToPascalCase(String str) {
+        byte caseType = detectCase(str);
+        return null;
+    }
+
+    private static byte detectCase(String str) {
+        return 0;
+    }
+
+
+
 
 }

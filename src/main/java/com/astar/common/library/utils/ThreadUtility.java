@@ -77,7 +77,6 @@ public class ThreadUtility extends ThreadUtils {
         runnable.run();
         long end = System.currentTimeMillis();
         long elapsedTime = end - start;
-        System.out.print("<2> Time Taken : " + (elapsedTime / 1000.0));
         LOGGER.info("<2> Time Taken : {}s", (elapsedTime / 1000.0));
     }
 
