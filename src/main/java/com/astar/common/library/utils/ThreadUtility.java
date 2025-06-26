@@ -79,6 +79,14 @@ public class ThreadUtility extends ThreadUtils {
         long elapsedTime = end - start;
         LOGGER.info("<2> Time Taken : {}s", (elapsedTime / 1000.0));
     }
+    public static void executeWithTimer(Runnable runnable, int id) {
+        LOGGER.info("Starting Task {}", id);
+        long start = System.currentTimeMillis();
+        runnable.run();
+        long end = System.currentTimeMillis();
+        long elapsedTime = end - start;
+        LOGGER.info("<3> Task {} Time Taken : {}s",id , (elapsedTime / 1000.0));
+    }
 
     public static void executeWithPreciseTimer(Runnable runnable) {
         long start = System.nanoTime();

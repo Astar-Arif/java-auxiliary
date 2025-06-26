@@ -1,7 +1,14 @@
 package com.astar.common.library.utils;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +16,7 @@ import java.util.Optional;
  * Utility class for CSV file operations.
  * Provides methods for reading, writing, and manipulating CSV files.
  */
-//TODO CREATE DEFINITION
+//TODO CREATE DEFINITION / IMPLEMENT
 public abstract class FileUtility {
     /*
      *
@@ -29,16 +36,19 @@ public abstract class FileUtility {
      * @return The created File object
      * @throws IOException If an I/O error occurs
      */
-    public static File createCSVFile(
-            File file, List<String> columns, List<List<String>> data,
-            String delimiter
+    public static void createCSVFile(
+            List<String> headers,
+            List<Object[]> data,
+            Writer writer
     ) throws IOException {
-        int colSize = columns.size();
-        for (int i = 0; i < colSize; i++) {
-            String curr = columns.get(i) + (i != colSize - 1 ? delimiter : "");
-            System.out.print(curr);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader(headers.toArray(new String[0]))
+                .get();
+        try (final CSVPrinter printer = new CSVPrinter(writer, csvFormat)) {
+            for (Object[] arr : data) {
+                printer.printRecord(arr);
+            }
         }
-        return null;
     }
 
     /**
