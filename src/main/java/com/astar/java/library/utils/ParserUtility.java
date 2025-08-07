@@ -89,7 +89,7 @@ public abstract class ParserUtility {
      * @return The converted value of type T.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T parseTo(Class<T> target, Object value) {
+    public static <T> T typeCastTo(Class<T> target, Object value) {
         if (value == null) {
             return null;
         }
@@ -98,20 +98,20 @@ public abstract class ParserUtility {
         }
         String strValue = value.toString().trim();
         if (Number.class.isAssignableFrom(target)) {
-            return (T) handleParseNumber(target, strValue);
+            return (T) handleNumberCast(target, strValue);
         } else if (Temporal.class.isAssignableFrom(target)) {
-            return (T) handleParseTime(target, strValue);
+            return (T) handleTimeCast(target, strValue);
         } else if (target == Boolean.class) {
-            return (T) handleParseBoolean(strValue);
+            return (T) handleBooleanCast(strValue);
         } else if (target == Character.class) {
-            return (T) handleParseCharacter(strValue);
+            return (T) handleCharacterCast(strValue);
         } else if (target == String.class) {
             return (T) strValue;
         }
         throw new IllegalArgumentException("Unsupported type: " + target.getName());
     }
 
-    private static Number handleParseNumber(Class<?> target, String value) {
+    private static Number handleNumberCast(Class<?> target, String value) {
         try {
             return switch (target.getSimpleName()) {
                 case "Integer" -> Integer.valueOf(value);
@@ -131,22 +131,22 @@ public abstract class ParserUtility {
         }
     }
 
-    private static Boolean handleParseBoolean(String value) {
+    private static Boolean handleBooleanCast(String value) {
         return "true".equalsIgnoreCase(value) || "1".equals(value);
     }
 
-    private static Character handleParseCharacter(String value) {
+    private static Character handleCharacterCast(String value) {
         return !value.isEmpty() ? value.charAt(0) : null;
     }
 
-    private static Temporal handleParseTime(Class<?> target, String value) {
+    private static Temporal handleTimeCast(Class<?> target, String value) {
         try {
             if (value.matches("^\\d{10}$")) {
                 Instant instant = Instant.ofEpochSecond(Long.parseLong(value));
-                return handleParseInstant(target, instant);
+                return handleInstantCast(target, instant);
             } else if (value.matches("^\\d{13}$")) {
                 Instant instant = Instant.ofEpochMilli(Long.parseLong(value));
-                return handleParseInstant(target, instant);
+                return handleInstantCast(target, instant);
             } else {
                 return switch (target.getSimpleName()) {
                     case "LocalDate" -> LocalDate.parse(value, DateTimeFormatter.ISO_DATE);
@@ -169,7 +169,7 @@ public abstract class ParserUtility {
         }
     }
 
-    private static Temporal handleParseInstant(Class<?> target, Instant instant) {
+    private static Temporal handleInstantCast(Class<?> target, Instant instant) {
         if (target == LocalDate.class) {
             return instant.atZone(ZoneId.systemDefault()).toLocalDate();
         } else if (target == LocalTime.class) {
