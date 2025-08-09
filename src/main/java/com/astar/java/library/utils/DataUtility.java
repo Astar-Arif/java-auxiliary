@@ -1,6 +1,7 @@
 package com.astar.java.library.utils;
 
 import com.astar.java.library.enums.ChecksumType;
+import com.astar.java.library.pojo.Base;
 import org.apache.commons.codec.digest.DigestUtils;
 
 
@@ -52,20 +53,7 @@ public class DataUtility {
         crc.update(data.getBytes());
         return String.valueOf(crc.getValue());
     }
-
-
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        String data = "ARIF RAIHAN";
-        int length = 6;
-        System.out.println("Test : " + generateChecksum(ChecksumType.MD5, data));
-        System.out.println("Test : " + generateChecksum(ChecksumType.MD5, data, length));
-        System.out.println("Test : " + generateChecksum(ChecksumType.SHA_1, data));
-        System.out.println("Test : " + generateChecksum(ChecksumType.SHA_1, data, length));
-        System.out.println("Test : " + generateChecksum(ChecksumType.SHA_256, data));
-        System.out.println("Test : " + generateChecksum(ChecksumType.SHA_256, data, length));
-        System.out.println("Test : " + generateChecksum(ChecksumType.SHA_512, data));
-        System.out.println("Test : " + generateChecksum(ChecksumType.SHA_512, data, length));
-        System.out.println("Test : " + generateChecksum(ChecksumType.CRC32, data));
-        System.out.println("Test : " + generateChecksum(ChecksumType.CRC32, data, length));
+    public static String toBase(Base base, String data) {
+        return null;
     }
 }
